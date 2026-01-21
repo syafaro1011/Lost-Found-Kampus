@@ -17,7 +17,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Portal Lost & Found</a>
-            <a href="pages/login.php" class="btn btn-outline-light">Login Petugas</a>
+            <a href="pages/login.php" class="btn btn-outline-light">Login</a>
         </div>
     </nav>
 
