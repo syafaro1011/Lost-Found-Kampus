@@ -127,14 +127,14 @@ if (isset($_SESSION['username'])) {
                     </div>
                     <div class="logo-text">
                         <h6>UNIVERSITAS</h6>
-                        <h5>TEKNOLOGI BANDUNG</h5>
+                        <h5>XXXXX XXXXXXX</h5>
                     </div>
                 </div>
 
                 <h2 class="form-title">Login - Lost & Found</h2>
                 <p class="form-subtitle">Selamat Datang kembali, silahkan login ke akun Anda untuk melanjutkan</p>
 
-                <!-- Alert Messages -->
+                <!-- Alert -->
                 <?php if(isset($_GET['pesan'])): ?>
                     <div class="alert alert-danger" role="alert">
                         <i class="fas fa-exclamation-circle me-2"></i>
@@ -177,7 +177,7 @@ if (isset($_SESSION['username'])) {
     </div>
 </div>
 
-<script src="../assets/js/script.js"></script>
+<script src="../assets/js/login.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
