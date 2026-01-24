@@ -56,13 +56,3 @@ window.addEventListener("scroll", function () {
     if (btn) btn.remove();
   }
 });
-
-// Add fade out animation
-const style = document.createElement("style");
-style.textContent = `
-            @keyframes fadeOut {
-                from { opacity: 1; transform: scale(1); }
-                to { opacity: 0; transform: scale(0.8); }
-            }
-        `;
-document.head.appendChild(style);

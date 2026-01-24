@@ -1,6 +1,5 @@
 <?php
-require '../api.php';
-
+require '../api/api.php';
 // Proteksi Halaman
 if (!isset($_SESSION['username'])) {
     header("Location: login.php?pesan=restricted");
@@ -48,7 +47,7 @@ if (!isset($_SESSION['username'])) {
     </nav>
 
     <div class="container py-4">
-        
+
         <!-- Info Banner -->
         <div class="info-banner">
             <h6>
@@ -76,9 +75,8 @@ if (!isset($_SESSION['username'])) {
                     <form action="" method="GET" class="d-flex gap-2">
                         <div class="search-wrapper flex-grow-1">
                             <i class="bi bi-search search-icon"></i>
-                            <input type="text" name="search" class="form-control" 
-                                   placeholder="Cari barang atau lokasi..."
-                                   value="<?= $keyword ?? ''; ?>">
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Cari barang atau lokasi..." value="<?= $keyword ?? ''; ?>">
                         </div>
                         <button type="submit" class="btn btn-primary btn-search">
                             <i class="bi bi-search"></i>
@@ -87,20 +85,40 @@ if (!isset($_SESSION['username'])) {
                     </form>
                 </div>
 
+
                 <!-- Action Buttons -->
                 <div class="col-12 col-md-3">
                     <div class="action-buttons justify-content-md-end">
-                        <button type="button" class="btn btn-success btn-action" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                        <button type="button" class="btn btn-success btn-action" data-bs-toggle="modal"
+                            data-bs-target="#modalTambah">
                             <i class="bi bi-plus-lg"></i>
                             <span>Lapor</span>
                         </button>
-                        <a href="../cetak_laporan.php" target="_blank" class="btn btn-print btn-action" title="Cetak Laporan">
+                        <a href="../cetak_laporan.php" target="_blank" class="btn btn-print btn-action"
+                            title="Cetak Laporan">
                             <i class="bi bi-printer"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs mb-4">
+            <a href="?status=all"
+                class="btn filter-btn <?= !isset($_GET['status']) || $_GET['status'] == 'all' ? 'btn-warning' : 'btn-outline-warning' ?>">
+                <i class="bi bi-grid"></i> Semua (<?= count($items); ?>)
+            </a>
+            <a href="?status=lost"
+                class="btn filter-btn <?= isset($_GET['status']) && $_GET['status'] == 'lost' ? 'btn-danger' : 'btn-outline-danger' ?>">
+                <i class="bi bi-exclamation-circle"></i> Hilang (<?= count(array_filter($items, fn($item) => $item['status'] == 'lost')); ?>)
+            </a>
+            <a href="?status=found"
+                class="btn filter-btn <?= isset($_GET['status']) && $_GET['status'] == 'found' ? 'btn-success' : 'btn-outline-success' ?>">
+                <i class="bi bi-check-circle"></i> Ditemukan (<?= count(array_filter($items, fn($item) => $item['status'] == 'found')); ?>)
+            </a>
+        </div>
+
 
         <!-- Alert -->
         <?php if (isset($_GET['pesan'])): ?>
@@ -109,10 +127,14 @@ if (!isset($_SESSION['username'])) {
                     <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"></i>
                     <div>
                         <?php
-                        if ($_GET['pesan'] == "berhasil") echo "Laporan berhasil ditambahkan!";
-                        if ($_GET['pesan'] == "berhasil_update") echo "Laporan berhasil diedit!";
-                        if ($_GET['pesan'] == "berhasil_hapus") echo "Laporan berhasil dihapus!";
-                        if ($_GET['pesan'] == "akses_ditolak") echo '<span class="text-danger">Gagal! Anda hanya bisa menghapus laporan milik sendiri.</span>';
+                        if ($_GET['pesan'] == "berhasil")
+                            echo "Laporan berhasil ditambahkan!";
+                        if ($_GET['pesan'] == "berhasil_update")
+                            echo "Laporan berhasil diedit!";
+                        if ($_GET['pesan'] == "berhasil_hapus")
+                            echo "Laporan berhasil dihapus!";
+                        if ($_GET['pesan'] == "akses_ditolak")
+                            echo '<span class="text-danger">Gagal! Anda hanya bisa menghapus laporan milik sendiri.</span>';
                         ?>
                     </div>
                 </div>
@@ -127,10 +149,8 @@ if (!isset($_SESSION['username'])) {
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                         <div class="card item-card">
                             <div class="card-img-wrapper">
-                                <img src="../assets/uploads/<?= $row['foto']; ?>" 
-                                     class="card-img-top" 
-                                     alt="<?= $row['judul_laporan'] ?>"
-                                     loading="lazy">
+                                <img src="../assets/uploads/<?= $row['foto']; ?>" class="card-img-top"
+                                    alt="<?= $row['judul_laporan'] ?>" loading="lazy">
                                 <div class="card-img-overlay-badge">
                                     <span class="badge badge-custom bg-<?= $row['status'] == 'lost' ? 'danger' : 'success' ?>">
                                         <?= strtoupper($row['status']) ?>
@@ -153,27 +173,24 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="card-footer">
                                 <div class="d-grid gap-2">
-                                    <a href="detail_barang.php?id=<?= $row['id'] ?>" 
-                                       class="btn btn-success btn-detail btn-card">
+
+                                    <!-- Button Detail  -->
+                                    <a href="detail_barang.php?id=<?= $row['id'] ?>"
+                                        class="btn btn-success btn-detail btn-card">
                                         <i class="bi bi-eye"></i> Lihat Lebih
                                     </a>
-
+                                
+                                    <!-- Button Edit & Delete (hanya untuk pemilik laporan) -->
                                     <?php if ($row['user_id'] == $_SESSION['user_id']): ?>
-                                        <button type="button" 
-                                                class="btn btn-edit btn-card" 
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalEdit" 
-                                                data-id="<?= $row['id'] ?>"
-                                                data-judul="<?= $row['judul_laporan'] ?>" 
-                                                data-lokasi="<?= $row['lokasi'] ?>"
-                                                data-deskripsi="<?= $row['deskripsi'] ?? '' ?>" 
-                                                data-status="<?= $row['status'] ?>"
-                                                data-category="<?= $row['category_id'] ?? 1 ?>">
+                                        <button type="button" class="btn btn-edit btn-card" data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit" data-id="<?= $row['id'] ?>"
+                                            data-judul="<?= $row['judul_laporan'] ?>" data-lokasi="<?= $row['lokasi'] ?>"
+                                            data-deskripsi="<?= $row['deskripsi'] ?? '' ?>" data-status="<?= $row['status'] ?>"
+                                            data-category="<?= $row['category_id'] ?? 1 ?>">
                                             <i class="bi bi-pencil"></i> Edit
                                         </button>
 
-                                        <button class="btn btn-delete btn-card" 
-                                                onclick="confirmDelete(<?= $row['id'] ?>)">
+                                        <button class="btn btn-delete btn-card" onclick="confirmDelete(<?= $row['id'] ?>)">
                                             <i class="bi bi-trash"></i> Hapus
                                         </button>
                                     <?php endif; ?>
@@ -187,7 +204,8 @@ if (!isset($_SESSION['username'])) {
                     <div class="empty-state">
                         <i class="bi bi-inbox"></i>
                         <p>Barang tidak ditemukan atau belum ada laporan.</p>
-                        <button class="btn btn-primary btn-action mt-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                        <button class="btn btn-primary btn-action mt-3" data-bs-toggle="modal"
+                            data-bs-target="#modalTambah">
                             <i class="bi bi-plus-lg"></i>
                             Buat Laporan Pertama
                         </button>
@@ -196,59 +214,12 @@ if (!isset($_SESSION['username'])) {
             <?php endif; ?>
         </div>
     </div>
-            
 
-    <!-- Modal Tambah Laporan Baru -->
+
+    <!-- Modal Tambah dan Edit -->
     <?php include 'modal_tambah.php'; ?>
     <?php include 'modal_edit.php'; ?>
 
-    <script>
-        //Handler Edit
-        var modalEdit = document.getElementById('modalEdit')
-        modalEdit.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget
-
-            // Mengisi input di dalam modal menggunakan data dari tombol
-            document.getElementById('edit-id').value = button.getAttribute('data-id')
-            document.getElementById('edit-judul').value = button.getAttribute('data-judul')
-            document.getElementById('edit-lokasi').value = button.getAttribute('data-lokasi')
-            document.getElementById('edit-deskripsi').value = button.getAttribute('data-deskripsi')
-            document.getElementById('edit-status').value = button.getAttribute('data-status')
-            document.getElementById('edit-category').value = button.getAttribute('data-category')
-        })
-
-        // Confirm Delete
-        function confirmDelete(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus laporan ini?')) {
-                // Animate card before delete
-                event.target.closest('.item-card').style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => {
-                    window.location.href = '../api.php?action=delete&id=' + id;
-                }, 300);
-            }
-        }
-
-        // Form validation
-        const formEdit = document.getElementById('formEdit');
-        if (formEdit) {
-            formEdit.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Show loading state
-                const submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Menyimpan...';
-                submitBtn.disabled = true;
-                
-                // Simulate API call
-                setTimeout(() => {
-                    alert('Laporan berhasil diupdate!');
-                    bootstrap.Modal.getInstance(modalEdit).hide();
-                    submitBtn.innerHTML = 'Simpan Perubahan';
-                    submitBtn.disabled = false;
-                }, 1000);
-            });
-        }
-    </script>
     <script src="../assets/js/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
