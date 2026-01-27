@@ -104,7 +104,7 @@ if (!isset($_SESSION['username'])) {
         </div>
 
         <!-- Filter Tabs -->
-        <div class="filter-tabs mb-4">
+        <div class="filter-tabs mb-4 justify-content-center">
             <a href="?status=all"
                 class="btn filter-btn <?= !isset($_GET['status']) || $_GET['status'] == 'all' ? 'btn-warning' : 'btn-outline-warning' ?>">
                 <i class="bi bi-grid"></i> Semua (<?= count($items); ?>)

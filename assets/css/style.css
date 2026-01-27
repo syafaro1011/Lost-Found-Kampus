@@ -896,13 +896,22 @@ body {
 }
 
 /* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    gap: 10px;              
+    flex-wrap: wrap;       
+    margin: 20px 0;      
+}
+
 .filter-tabs .btn {
     border-radius: 20px;
-    padding: 8px 20px;
-    margin-right: 10px;
+    padding: 6px 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
     transition: all 0.3s;
 }
 
-.filter-btn.active {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
