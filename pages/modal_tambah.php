@@ -1,22 +1,37 @@
-<div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-pencil-square"></i> Buat Laporan Baru
                     </h5>
+
+                    <!-- Button Close -->
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <form action="../api.php" method="POST" enctype="multipart/form-data">
+                <form action="..//api/api.php" method="POST" enctype="multipart/form-data">
                     <div class="modal-body p-4">
                         <input type="hidden" name="action" value="insert_item">
 
+                        <!-- Judul Laporan -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Judul Laporan</label>
                             <input type="text" name="judul" class="form-control"
                                 placeholder="Contoh: Ditemukan Kunci Motor" required>
                         </div>
 
+                        <!-- Kategori -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Kategori</label>
@@ -40,23 +55,28 @@
                             </div>
                         </div>
 
+                        <!-- Lokasi Kejadian -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Lokasi Kejadian</label>
                             <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Di depan mebir"
                                 required>
                         </div>
 
+                        <!-- Deskripsi Barang -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Deskripsi Barang</label>
                             <textarea name="deskripsi" class="form-control" rows="3"
                                 placeholder="Jelaskan ciri-ciri barang..." required></textarea>
                         </div>
 
+                        <!-- Foto Barang -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Foto Barang</label>
                             <input type="file" name="foto" class="form-control" accept="image/*" required>
                         </div>
                     </div>
+
+                    <!-- Simpan dan Batal -->
                     <div class="modal-footer bg-light">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary px-4">Simpan Laporan</button>
@@ -65,3 +85,6 @@
             </div>
         </div>
     </div>
+</body>
+
+</html>
